@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="/asset/css/custom/breadcrumb.css">
+<nav class="nav-breadcrumb" aria-label="breadcrumb">
+    <ul class="breadcrumb">
+      <li><a href="/" class="previousBreadcrumb">Top</a></li>
+      <li><a href="/user">Users</a></li>
+      <li><a href="/user/add" class="breadcrumbNow">User add</a></li>
+    </ul>
+</nav>
+  
+  <div class="card" style="height: auto;">
+      <div class="card-body mx-3">
+        <form id="addFrm" name="addFrm" method="post">
+          <div class="row my-2">
+            <div class="col">
+              <h2>User add</h2>
+            </div>
+          </div>
+  
+          <% if(errorMessage.length > 0) { %>
+            <% if(errorMessage.length > 1) {%>
+              <% for (let error of errorMessage) { %>
+                <div class="alert alert-danger" role="alert" ><%= error %></div>
+              <% } %>
+            <% } else { %>
+              <div class="alert alert-danger" role="alert" ><%= errorMessage %></div>
+            <% } %>
+          <% } %>
+  
+          <div class="row">
+            <div class="col">
+              <div class="row my-2">
+                <div class="col-2">
+                  <span class="label-input">User name</span>
+                </div>
+                <div class="col-9">
+                  <input type="text" aria-label="User name" aria-describedby="basic-addon1" id="username" name="username" size="40" value=<%= addQuery.username? addQuery.username: '' %>>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="row my-2">
+                <div class="col-2">
+                  <span class="label-input">Full name</span>
+                </div>
+                <div class="col-9">
+                  <input type="text" aria-label="FullName" aria-describedby="basic-addon1" id="fullName" name="fullName" size="40" value=<%= addQuery.fullName? addQuery.fullName: '' %>>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col">
+              <div class="row my-2">
+                <div class="col-2">
+                  <span class="label-input">Password</span>
+                </div>
+                <div class="col-9">
+                  <input type="password" aria-label="Password" aria-describedby="basic-addon1" id="password" name="password" size="40" value=<%= addQuery.password? addQuery.password: '' %>>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="row my-2">
+                <div class="col-2">
+                  <span class="label-input">Re-password</span>
+                </div>
+                <div class="col-9">
+                  <input type="password" aria-label="RePassword" aria-describedby="basic-addon1" id="rePassword" name="rePassword" size="40" value=<%= addQuery.rePassword? addQuery.rePassword: '' %>>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              <div class="row my-2">
+                <div class="col-2">
+                  <span class="label-input">Role</span>
+                </div>
+                <div class="col-sm-2">
+                  <select id="role" name="role">
+                    <option value="1">Admin</option>
+                    <option value="2">Sales</option>
+                    <option value="3">Staff</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+            </div>
+          </div>
+  
+          <div class="container">
+            <div class="row">
+              <div class="col text-center">
+                <button class="btn-users" type="submit" id="addButton">Add</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+     
+  <script type="text/javascript" src="/asset/js/site/common.js"></script>
+  <script type="text/javascript" src="/asset/js/site/user/add.js"></script>

@@ -1,0 +1,160 @@
+<link rel="stylesheet" href="/asset/css/custom/breadcrumb.css">
+
+<nav class="nav-breadcrumb" aria-label="breadcrumb">
+  <ul class="breadcrumb">
+    <li><a href="/">Top</a></li>
+    <li><a href="/user" class="breadcrumbNow">User</a></li>
+  </ul>
+</nav>
+
+<div class="card" style="height: auto;">
+    <div class="card-body mx-3">
+      <form id="searchForm" method="get">
+        <div class="row my-2">
+          <div class="col-11">
+            <h2>User search</h2>
+          </div>
+          <div class="col">
+            <a href="/user/add">
+              <button type="button" class="btn btn-primary">Add user</button>
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+              <div class="row my-2">
+                  <div class="col-2">
+                    <span class="label-input">Username</span>
+                  </div>
+                  <div class="col-9">
+                    <input type="text" aria-label="Username" aria-describedby="basic-addon1" id="username" name="username" size="40" value=<%= searchConditions.username? searchConditions.username: '' %>>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="col">
+              <div class="row my-2">
+                  <div class="col-2">
+                    <span class="label-input">Full name</span>
+                  </div>
+                  <div class="col-9">
+                    <input type="text" aria-label="Name" aria-describedby="basic-addon1" id="name" name="name" size="40" value=<%= searchConditions.name? searchConditions.name: '' %>>
+                  </div>
+              </div>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <div class="row my-2">
+                <div class="col-2">
+                  <span class="label-input">Role</span>
+                </div>
+                <div class="col-sm-2">
+                  <input type="checkbox" id="role1" name="role" value="1" <%= searchConditions.role&&_.includes(searchConditions.role,'1')?'checked' : '' %>>
+                  <label for="role1">Admin</label><br>
+                </div>
+                <div class="col-sm-2">
+                  <input type="checkbox" id="role2" name="role" value="2" <%= searchConditions.role&&_.includes(searchConditions.role,'2')? 'checked' : '' %>>
+                  <label for="role2">Sales</label><br>
+                </div>
+                <div class="col-sm-2">
+                  <input type="checkbox" id="role3" name="role" value="3" <%= searchConditions.role&&_.includes(searchConditions.role,'3')? 'checked' : '' %>>
+                  <label for="role3">Staff</label><br>
+                </div>
+            </div>
+          </div>
+          <div class="col-sm">
+          </div>
+        </div>
+        
+          <div class="row">
+            <div class="col">
+            </div>
+            <div class="col-6">
+              <button class="btn-users" type="submit" id="searchButton">Search</button>
+              <button type="button" class="btn-users" id="clearButton">Clear</button>
+              <button type="button" class="btn-users" id="exportButton">Export CSV</button>
+            </div>
+          </div>
+      </form>
+      <!-- hidden input -->
+      <input type="hidden" name="searchConditions" id="searchConditions" value=<%= JSON.stringify(searchConditions) %>>
+    </div>
+</div>
+
+<div class="card" style="height: auto;">
+  <% if (users && users.length > 0) {%>
+    <div class="card-body ml-3">
+      <div class="row">
+        <div class="col">
+          <div class="row my-2">
+            <div class="col">
+              <div><%= message %></span>
+            </div>
+          </div>
+            <div class="row my-2">
+              <div class="col">
+                <div class="pagination-container">
+
+                  <button onclick="gotoPage(1)" <%= page==1? 'disabled' : ''%>>First </button>
+
+                    <% if (page > 1) {%>
+                      <button onclick="gotoPage('<%- page - 1 %>')" <%= page==1? 'disabled' : ''%>><</button>
+                    <%} else {%>
+                        <button onclick="gotoPage(1)" <%= page==1? 'disabled' : ''%>><</button>                      
+                    <% } %>
+        
+                    <% for(let i = 1; i <= numOfPages; i++) {%>
+                      <button onclick="gotoPage('<%= i %>')" <%= page==i? 'disabled' : ''%>><%= i %> </button>
+                    <% } %>
+       
+                    <% if (page >=  numOfPages) {%>
+                      <button onclick="gotoPage('<%= numOfPages %>')" <%= page==numOfPages? 'disabled' : ''%>>></button>
+                    <%} else {%>
+                        <button onclick="gotoPage('<%- page + 1 %>')" <%= page==numOfPages? 'disabled' : ''%>>></button>                      
+                    <% } %>
+
+                    <button onclick="gotoPage('<%= numOfPages %>')" <%= page==numOfPages? 'disabled' : ''%>>Last </button>
+
+                </div>
+              </div>
+          </div>
+        </div>
+    </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Username</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% for (let user of users) { %>
+          <tr>
+            <th scope="row">
+              <a href="/user/<%= user.id %>"><button type="button" class="btn btn-primary">Edit</button></a>
+              <button type="button" class="btn btn-danger" onclick="deleteButtonOnClick(this, '<%= user.id %>')">Delete</button>
+            </th>
+            <td><%= user.username %></td>
+            <td><%= user.name %></td>
+            <td><%= user.role=='1'? 'Admin' : user.role=='2'? 'Sales' : 'Staff' %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  <%} else {%>
+    <div class="card-body ml-3">
+      <div><%= message %></span>
+    </div>    
+  <%}%>    
+</div>
+
+<script type="text/javascript" src="/asset/js/site/common.js"></script>
+<script type="text/javascript" src="/asset/js/site/user/search.js"></script>
